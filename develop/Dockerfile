@@ -56,7 +56,10 @@ RUN ldconfig
 # Expose the following ports
 #   8087:  Expose SDL Core's Web Socket port. Used to comunicate with the HMI
 #   12345: Expose SDL Core's primary port. Used to communicate with the SDL Core instance over TCP
-EXPOSE 8087 12345 
+#   5050: Expose video streaming port
+#   5080: Expose audio streaming port
+#   8090: Expose time testing port
+EXPOSE 8087 12345 5050 5080 8090
 
 # Run the start script that will launch SDL Core!
 CMD ["/bin/bash", "setup.sh"]
