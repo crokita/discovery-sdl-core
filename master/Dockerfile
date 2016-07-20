@@ -56,6 +56,8 @@ RUN ldconfig
 # Expose the following ports
 #   8087:  Expose SDL Core's Web Socket port. Used to comunicate with the HMI
 #   12345: Expose SDL Core's primary port. Used to communicate with the SDL Core instance over TCP
+#   4789: Data plane (VXLAN) for overlay network using UDP protocol
+#   7946: Control plane for overlay network using TCP/UDP protocol   
 EXPOSE 8087 12345 
 
 # Run the start script that will launch SDL Core!
