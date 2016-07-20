@@ -7,4 +7,4 @@ master branch:
 
 develop branch:
 
-```docker run -d -p 12435:12345 -p 8087:8087 crokita/sdl-core:develop```
+```docker run -d -p 12435:12345 -p 8087:8087 -e "HOST_IP=127.0.0.1" crokita/sdl-core:develop```
