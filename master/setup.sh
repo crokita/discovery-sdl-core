@@ -13,5 +13,5 @@ echo "Posting ${HOST_IP} to etcd"
 curl -L -X PUT http://192.168.1.130:4001/v2/keys/servers/core -d value="${HOST_IP}"
 
 #Start SDL Core
-cmake -DTIME_TESTER=OFF /usr/sdl
+#cmake -DTIME_TESTER=OFF /usr/sdl
 /usr/sdl/src/appMain/smartDeviceLinkCore
