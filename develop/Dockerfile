@@ -7,12 +7,12 @@ FROM buildpack-deps:jessie-curl
 
 MAINTAINER Chris Rokita version:0.1
 
-ENV SDL_CORE_BRANCH develop
-ENV SDL_CORE_NETWORK_INTERFACE eth0
+ENV CORE_BRANCH=develop \
+    CORE_NETWORK_INTERFACE=eth0
 
 # Create our working directory and Download SDL Core from github   
 RUN mkdir /usr/sdl/ \
-    && curl -sSL https://github.com/smartdevicelink/sdl_core/archive/$SDL_CORE_BRANCH.tar.gz \
+    && curl -sSL https://github.com/smartdevicelink/sdl_core/archive/$CORE_BRANCH.tar.gz \
     | tar -v -C /usr/sdl -xz --strip-components 1
 
 # Install dependencies
