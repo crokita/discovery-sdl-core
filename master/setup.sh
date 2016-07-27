@@ -2,7 +2,7 @@
 
 # This script replaces the IP address in smartDeviceLink.ini with the machine's IP address and then runs SmartDeviceLink Core.
 # The IPis required to be replaced for the websocket connection with the HMI to function.
-DOCKER_IP="$(hostname -i)"
+DOCKER_IP="$(ip addr show ${CORE_NETWORK_INTERFACE} | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)"
 echo "Changing smartDeviceLink.ini HMI ServerAddress to ${DOCKER_IP}"
 
 # Replace the IP address in smartDeviceLink.ini with the machines IP address
