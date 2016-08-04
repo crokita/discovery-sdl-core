@@ -8,7 +8,7 @@ FROM buildpack-deps:jessie-curl
 MAINTAINER Chris Rokita version:0.1
 
 ENV CORE_BRANCH=master \
-    CORE_NETWORK_INTERFACE=eth0
+    CORE_NETWORK_INTERFACE=eth0 
 
 # Create our working directory and Download SDL Core from github   
 RUN mkdir /usr/sdl/ \
@@ -45,8 +45,9 @@ RUN cp bin/mykey.pem src/appMain \
 # Change directory to the main folder for SDL Core
 WORKDIR src/appMain/
 
-# Copy SDL Core start script into container
+# Copy SDL Core start script and health check script into container
 COPY setup.sh setup.sh
+COPY health.sh health.sh
 
 ENV LD_LIBRARY_PATH /usr/sdl/bin/
 
