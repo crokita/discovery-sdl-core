@@ -1,55 +1,47 @@
 # ##################################################################################################
-# Basic docker build of SDL_Core. Totally not stolen from https://github.com/smartdevicelink/sdl_core
+# Basic docker build of SDL_Core for use with Manticore:  https://github.com/smartdevicelink/sdl_core
 # ##################################################################################################
 
-# This image is based of debian with curl preinstalled
-FROM buildpack-deps:jessie-curl
+# This image is based of debian with git preinstalled
+FROM buildpack-deps:scm
 
-MAINTAINER Chris Rokita version:0.1
+MAINTAINER Chris Rokita version:1.0
 
 ENV CORE_BRANCH=master \
     CORE_NETWORK_INTERFACE=eth0 
 
-# Create our working directory and Download SDL Core from github   
-RUN mkdir /usr/sdl/ \
-    && curl -sSL https://github.com/smartdevicelink/sdl_core/archive/$CORE_BRANCH.tar.gz \
-    | tar -v -C /usr/sdl -xz --strip-components 1
+# Download SDL Core from github
+WORKDIR /usr
+
+RUN git clone -b $CORE_BRANCH https://github.com/smartdevicelink/sdl_core.git 
+RUN mkdir /usr/build
 
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \ 
         cmake \
-        libavahi-client-dev \
-        libavahi-common-dev \
-        libbluetooth-dev \
         libudev-dev \
-        libusb-1.0-0-dev \
         libsqlite3-dev \
         libssl-dev \
         python \
         sudo \
         sqlite3     
 
-# Change directory to the unpacked SDL Core sourcecode
-WORKDIR /usr/sdl/
+# Work inside the build folder
+WORKDIR /usr/build
 
 # Generate our Makefile, compile it and install
-RUN cmake -DBUILD_AVAHI_SUPPORT=OFF -DBUILD_USB_SUPPORT=OFF -DBUILD_BT_SUPPORT=OFF -DEXTENDED_MEDIA_MODE=OFF -DENABLE_HMI_PTU_DECRYPTION=OFF . \
+RUN cmake -DBUILD_AVAHI_SUPPORT=OFF -DBUILD_USB_SUPPORT=OFF -DBUILD_BT_SUPPORT=OFF -DEXTENDED_MEDIA_MODE=OFF -DENABLE_HMI_PTU_DECRYPTION=OFF ../sdl_core \
     && make \
     && make install
     
-# Copy required key and certification
-RUN cp bin/mykey.pem src/appMain \ 
-    && cp bin/mycert.pem src/appMain
+# Go to created bin directory
+WORKDIR /usr/build/bin
 
-# Change directory to the main folder for SDL Core
-WORKDIR src/appMain/
-
-# Copy SDL Core start script and health check script into container
+# Copy SDL Core start script into container
 COPY setup.sh setup.sh
-COPY health.sh health.sh
 
-ENV LD_LIBRARY_PATH /usr/sdl/bin/
+ENV LD_LIBRARY_PATH /usr/build/bin/
 
 # Configure logger
 RUN ldconfig

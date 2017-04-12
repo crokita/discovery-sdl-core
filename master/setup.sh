@@ -7,7 +7,10 @@ DOCKER_IP="$(ip addr show ${CORE_NETWORK_INTERFACE} | grep "inet\b" | awk '{prin
 echo "Changing smartDeviceLink.ini HMI ServerAddress to ${DOCKER_IP}"
 
 # Replace the IP address in smartDeviceLink.ini with the machines IP address
-perl -pi -e 's/127.0.0.1/'$DOCKER_IP'/g' /usr/sdl/src/appMain/smartDeviceLink.ini
+perl -pi -e 's/127.0.0.1/'$DOCKER_IP'/g' /usr/build/bin/smartDeviceLink.ini
+
+# Add the ability to send logs to stdout
+perl -pi -e 's/ALL, SmartDeviceLinkCoreLogFile/ALL, SmartDeviceLinkCoreLogFile, Console/g' /usr/build/bin/log4cxx.properties
 
 #Start SDL Core
-/usr/sdl/src/appMain/smartDeviceLinkCore
+/usr/build/bin/smartDeviceLinkCore
