@@ -3,7 +3,7 @@
 # ##################################################################################################
 
 # This image is based of debian with git preinstalled
-FROM buildpack-deps:scm
+FROM buildpack-deps:jessie-curl
 
 MAINTAINER Chris Rokita version:1.0
 
@@ -13,7 +13,9 @@ ENV CORE_BRANCH=master \
 # Download SDL Core from github
 WORKDIR /usr
 
-RUN git clone -b $CORE_BRANCH https://github.com/smartdevicelink/sdl_core.git 
+RUN mkdir /usr/sdl_core \
+    && curl -sSL https://github.com/smartdevicelink/sdl_core/archive/$CORE_BRANCH.tar.gz | tar -v -C /usr/sdl_core -xz --strip-components 1
+
 RUN mkdir /usr/build
 
 # Install dependencies
