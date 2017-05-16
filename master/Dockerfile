@@ -25,8 +25,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libudev-dev \
         libsqlite3-dev \
         libssl-dev \
+        nginx \
         python \
         sudo \
+        supervisor \
         sqlite3     
 
 # Work inside the build folder
@@ -48,13 +50,23 @@ ENV LD_LIBRARY_PATH /usr/build/bin/
 # Configure logger
 RUN ldconfig
 
+# Delete default nginx configuration
+RUN rm -v /etc/nginx/nginx.conf
+
+# Copy new nginx configuration
+COPY nginx.conf /etc/nginx
+
+# Copy supervisor config
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 # Expose the following ports
+#   3001: Expose SDL Core's file system
 #   8087:  Expose SDL Core's Web Socket port. Used to comunicate with the HMI
 #   12345: Expose SDL Core's primary port. Used to communicate with the SDL Core instance over TCP
 #   5050: Expose video streaming port
 #   5080: Expose audio streaming port
 #   8090: Expose time testing port
-EXPOSE 8087 12345 5050 5080 8090
+EXPOSE 3001 8087 12345 5050 5080 8090
 
 # Run the start script that will launch SDL Core!
 CMD ["/bin/bash", "setup.sh"]
