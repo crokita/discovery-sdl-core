@@ -9,6 +9,9 @@ DOCKER_IP="$(ip addr show ${CORE_NETWORK_INTERFACE} | grep "inet\b" | awk '{prin
 # Replace the IP address in smartDeviceLink.ini with the machines IP address
 perl -pi -e 's/127.0.0.1/'$DOCKER_IP'/g' /usr/build/bin/smartDeviceLink.ini
 
+# Disable policy tables to allow full access to vehicle data and other things
+perl -pi -e 's/EnablePolicy = true/EnablePolicy = false/g' /usr/build/bin/smartDeviceLink.ini
+
 # Add the ability to send logs to stdout
 perl -pi -e 's/ALL, SmartDeviceLinkCoreLogFile/ALL, SmartDeviceLinkCoreLogFile, Console/g' /usr/build/bin/log4cxx.properties
 
