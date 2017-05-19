@@ -9,8 +9,8 @@ DOCKER_IP="$(ip addr show ${CORE_NETWORK_INTERFACE} | grep "inet\b" | awk '{prin
 # Replace the IP address in smartDeviceLink.ini with the machines IP address
 perl -pi -e 's/127.0.0.1/'$DOCKER_IP'/g' /usr/build/bin/smartDeviceLink.ini
 
-# Set the default preloaded policy table to allow access to all vehicle data
-perl -pi -e 's/\[\"Base-4\"\]/\[\"Base-4\", \"Location-1\", \"VehicleInfo-3\", \"Emergency-1\", \"DrivingCharacteristics-3\"\]/g' /usr/build/bin/sdl_preloaded_pt.json
+# Set the default preloaded policy table to allow access to everything....... everything
+perl -pi -e 's/\[\"Base-4\"\]/\[\"Base-4\", \"Location-1\", \"Notifications\", \"DrivingCharacteristics-3\", \"VehicleInfo-3\", \"PropriataryData-1\", \"PropriataryData-2\", \"ProprietaryData-3\", \"Emergency-1\", \"Navigation-1\", \"Base-6\", \"OnKeyboardInputOnlyGroup\", \"OnTouchEventOnlyGroup\", \"DiagnosticMessageOnly\", \"DataConsent-2\", \"BaseBeforeDataConsent\", \"SendLocation\", \"WayPoints\", \"BackgroundAPT\"\]/g' /usr/build/bin/sdl_preloaded_pt.json
 
 # Add the ability to send logs to stdout
 perl -pi -e 's/ALL, SmartDeviceLinkCoreLogFile/ALL, SmartDeviceLinkCoreLogFile, Console/g' /usr/build/bin/log4cxx.properties
