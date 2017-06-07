@@ -35,9 +35,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /usr/build
 
 # Generate our Makefile, compile it and install
+# Remove everything but what's inside the bin folder of the build directory to save space
 RUN cmake -DBUILD_AVAHI_SUPPORT=OFF -DBUILD_USB_SUPPORT=OFF -DBUILD_BT_SUPPORT=OFF -DEXTENDED_MEDIA_MODE=OFF -DENABLE_HMI_PTU_DECRYPTION=OFF ../sdl_core \
     && make \
-    && make install
+    && make install \
+    && mv bin /usr/tmpbin \
+    && rm -rf * \
+    && mv /usr/tmpbin bin 
     
 # Go to created bin directory
 WORKDIR /usr/build/bin
