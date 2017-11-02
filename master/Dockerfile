@@ -2,7 +2,7 @@
 # Basic docker build of SDL_Core for use with Manticore:  https://github.com/smartdevicelink/sdl_core
 # ##################################################################################################
 
-# This image is based of debian with git preinstalled
+# This image is based of debian
 FROM buildpack-deps:jessie-curl
 
 MAINTAINER Chris Rokita version:1.0
@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python \
         sudo \
         supervisor \
-        sqlite3     
+        sqlite3 \
+        git 
 
 # Work inside the build folder
 WORKDIR /usr/build
