@@ -16,7 +16,10 @@ perl -pi -e 's/Default.*/Default = 20000/g' /usr/build/bin/smartDeviceLink.ini
 perl -pi -e 's/\[\"Base-4\"\]/\[\"Base-4\", \"Location-1\", \"Notifications\", \"DrivingCharacteristics-3\", \"VehicleInfo-3\", \"PropriataryData-1\", \"PropriataryData-2\", \"ProprietaryData-3\", \"Emergency-1\", \"Navigation-1\", \"Base-6\", \"OnKeyboardInputOnlyGroup\", \"OnTouchEventOnlyGroup\", \"DiagnosticMessageOnly\", \"DataConsent-2\", \"BaseBeforeDataConsent\", \"SendLocation\", \"WayPoints\", \"BackgroundAPT\", \"Notifications-RC\", \"RemoteControl\", \"HapticGroup\"\],\n\"moduleType\"\: \[\"CLIMATE\", \"RADIO\"\] /g' /usr/build/bin/sdl_preloaded_pt.json
 
 # Add the ability to send logs to stdout. Do not write logs to file
-perl -pi -e 's/ALL, SmartDeviceLinkCoreLogFile/ALL, Console/g' /usr/build/bin/log4cxx.properties
+perl -pi -e 's/ALL, SmartDeviceLinkCoreLogFile/ALL, SmartDeviceLinkCoreLogFile/g' /usr/build/bin/log4cxx.properties
+
+# Replace IP and Port in broker index.js file with the DOCKER_IP
+perl -pi -e "s/localhost:8087/$DOCKER_IP:8087/g" /usr/web/broker/index.js
 
 #Start supervisord
 /usr/bin/supervisord
